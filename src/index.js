@@ -1,7 +1,7 @@
 const express = require('express');
 const logger = require('./middleware/logger');
 const usersRouter = require('./routes/users');
-const { router: tasksRouter } = require('./routes/tasks');
+const tasksRouter = require('./routes/tasks');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
