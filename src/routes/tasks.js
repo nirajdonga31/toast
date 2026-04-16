@@ -26,6 +26,26 @@ router.post('/', (req, res) => {
   res.status(201).json(task);
 });
 
+// Update a task
+router.patch('/:id', (req, res) => {
+  const task = tasks.find(t => t.id === parseInt(req.params.id));
+  if (!task) return res.status(404).json({ error: 'Task not found' });
+  const { title, completed } = req.body;
+  if (title !== undefined) task.title = title || task.title;
+  if (completed !== undefined) task.completed = completed;
+  res.json(task);
+});
+
+// Assign task to user
+router.post('/:id/assign', (req, res) => {
+  const task = tasks.find(t => t.id === parseInt(req.params.id));
+  if (!task) return res.status(404).json({ error: 'Task not found' });
+  const { userId } = req.body;
+  if (userId === undefined) return res.status(400).json({ error: 'userId is required' });
+  task.userId = userId;
+  res.json(task);
+});
+
 // Toggle task completion
 router.patch('/:id/toggle', (req, res) => {
   const task = tasks.find(t => t.id === parseInt(req.params.id));
@@ -42,4 +62,4 @@ router.delete('/:id', (req, res) => {
   res.json({ message: 'Task deleted', task: deleted });
 });
 
-module.exports = router;
+module.exports = { router, tasks };
