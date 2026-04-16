@@ -26,8 +26,16 @@ jobs:
       - name: Send skill message to Discord
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          CONTENT: >-
+          CONTENT: |-
             use skill: pr-ci-agent
             pr_url=${{ github.event.pull_request.html_url }}
+
+            MUST DO:
+            1) Run: /root/.openclaw/skills/pr-ci-agent/scripts/collect_pr_context.sh ${{ github.event.pull_request.base.repo.owner.login }}/${{ github.event.pull_request.base.repo.name }} ${{ github.event.pull_request.number }} --run-tests
+            2) Confirm you produced a context.json path.
+            3) Add edge/failure-case tests locally (NO PUSH), rerun npm test.
+            4) Reply with: Summary + Tests added + Results (PASS/FAIL).
+
+            If you cannot run that script or cannot write files, say so explicitly.
         run: npx tsx .github/scripts/send-discord-webhook.ts
         shell: bash
